@@ -1,8 +1,11 @@
 using System;
+using Core.Domain.Interfaces.APIs;
 using Core.Service.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Refit;
 
 namespace Core.API.Extensions;
+
 public static class HttpExtensions
 {
     public static IServiceCollection AddCustomHttp(this IServiceCollection services, SecretManager secretManager)
@@ -28,6 +31,9 @@ public static class HttpExtensions
             client.BaseAddress = new Uri(secretManager.Google.BaseUrl);
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
+
+        services.AddRefitClient<IAuthApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri(secretManager.URL.AuthAPI));
 
         Console.WriteLine("Configuração das APIs consumidas realizada com sucesso!");
 

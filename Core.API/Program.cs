@@ -2,7 +2,6 @@ using System;
 using System.IO;
 using AspNetCoreRateLimit;
 using Core.API.Extensions;
-using Core.Service.Hubs;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -53,7 +52,6 @@ app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Core.API v1
 
 app.UseResponseCompression();
 app.UseRouting();
-app.MapHub<RotaHub>("websocket/rotas");
 app.UseIpRateLimiting();
 app.UseAuthentication();
 app.UseAuthorization();

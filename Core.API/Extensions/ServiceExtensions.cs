@@ -21,16 +21,8 @@ public static class ServiceExtensions
         services.AddCache(secretManager);
 
         services.AddScoped<IAmazonService, AmazonService>();
-        services.AddScoped<IMotoristaService, MotoristaService>();
-        services.AddScoped<ITokenService, TokenService>();
         services.AddScoped<IAsaasService, AsaasService>();
-        services.AddScoped<IUsuarioService, UsuarioService>();
         services.AddScoped<IAlunoService, AlunoService>();
-        services.AddScoped<IEnderecoService, EnderecoService>();
-        services.AddScoped<IRotaService, RotaService>();
-        services.AddScoped<ITrajetoService, TrajetoService>();
-        services.AddScoped<IAjusteEnderecoService, AjusteEnderecoService>();
-        services.AddScoped<IVeiculoService, VeiculoService>();
         services.AddScoped<IPlanoService, PlanoService>();
         services.AddScoped<IAssinaturaService, AssinaturaService>();
 
