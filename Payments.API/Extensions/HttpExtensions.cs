@@ -20,21 +20,6 @@ public static class HttpExtensions
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
 
-        services.AddHttpClient("api-nominatim", client =>
-        {
-            client.BaseAddress = new Uri("https://nominatim.openstreetmap.org/");
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
-
-        services.AddHttpClient("api-googlemaps", client =>
-        {
-            client.BaseAddress = new Uri(secretManager.Google.BaseUrl);
-            client.DefaultRequestHeaders.Add("Accept", "application/json");
-        });
-
-        services.AddRefitClient<IAuthApi>()
-            .ConfigureHttpClient(c => c.BaseAddress = new Uri(secretManager.URL.AuthAPI));
-
         Console.WriteLine("Configuração das APIs consumidas realizada com sucesso!");
 
         return services;

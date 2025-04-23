@@ -8,6 +8,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prometheus;
+using Microsoft.Extensions.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment.EnvironmentName;
@@ -34,7 +35,8 @@ builder.Services.AddCustomAuthentication(secretManager)
                 .AddCustomRepository(secretManager)
                 .AddCustomMapper()
                 .AddControllersWithFilters()
-                .AddCustomHttp(secretManager);
+                .AddCustomHttp(secretManager)
+                .AddRabbitMq().WithEnviroments(builder.Configuration);
 
 // Configura o logger
 builder.Logging.ClearProviders().AddConsole().AddDebug();

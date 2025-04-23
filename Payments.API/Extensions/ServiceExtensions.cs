@@ -9,7 +9,6 @@ using FluentValidation;
 using System.Reflection;
 using StackExchange.Redis;
 using Payments.Application.Configuration;
-// using Payments.Application.Workers;
 
 namespace Payments.API.Extensions;
 
@@ -22,10 +21,8 @@ public static class ServiceExtensions
 
         services.AddScoped<IAmazonService, AmazonService>();
         services.AddScoped<IAsaasService, AsaasService>();
-        services.AddScoped<IAlunoService, AlunoService>();
         services.AddScoped<IPlanoService, PlanoService>();
         services.AddScoped<IAssinaturaService, AssinaturaService>();
-
 
         Console.WriteLine("Configuração das services realizada com sucesso!");
 

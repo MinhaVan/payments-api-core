@@ -27,26 +27,10 @@ public class APIContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.ApplyConfiguration(new MotoristaRotaConfiguration());
-        modelBuilder.ApplyConfiguration(new MotoristaConfiguration());
-        modelBuilder.ApplyConfiguration(new UsuarioConfiguration());
         modelBuilder.ApplyConfiguration(new PlanoConfiguration());
-        modelBuilder.ApplyConfiguration(new AlunoRotaConfiguration());
         modelBuilder.ApplyConfiguration(new PagamentoConfiguration());
-        modelBuilder.ApplyConfiguration(new VeiculoConfiguration());
-        modelBuilder.ApplyConfiguration(new OrdemTrajetoConfiguration());
-        modelBuilder.ApplyConfiguration(new OrdemTrajetoMarcadorConfiguration());
         modelBuilder.ApplyConfiguration(new EmpresaConfiguration());
-        modelBuilder.ApplyConfiguration(new AlunoConfiguration());
-        modelBuilder.ApplyConfiguration(new RotaConfiguration());
-        modelBuilder.ApplyConfiguration(new RotaHistoricoConfiguration());
-        modelBuilder.ApplyConfiguration(new AlunoRotaHistoricoConfiguration());
-        modelBuilder.ApplyConfiguration(new EnderecoConfiguration());
         modelBuilder.ApplyConfiguration(new AssinaturaConfiguration());
-        modelBuilder.ApplyConfiguration(new AjusteAlunoRotaConfiguration());
-        modelBuilder.ApplyConfiguration(new PermissaoConfiguration());
-        modelBuilder.ApplyConfiguration(new UsuarioPermissaoConfiguration());
-        modelBuilder.ApplyConfiguration(new LocalizacaoTrajetoConfiguration());
 
         base.OnModelCreating(modelBuilder);
     }

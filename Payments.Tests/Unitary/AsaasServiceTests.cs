@@ -19,29 +19,22 @@ public class AsaasServiceTests
     private readonly Mock<IBaseRepository<Pagamento>> _paymentRepository = new();
     private readonly Mock<IBaseRepository<Assinatura>> _assinaturaRepository = new();
     private readonly Mock<ILogger<AsaasService>> _logger = new();
+    private readonly Mock<Localiza.BuildingBlocks.RabbitMQ.IPublisher<PagamentoWebHookAsaasRequest>> _publisher = new();
     private readonly IMapper _mapper;
     public readonly AsaasService _asaasService;
     public AsaasServiceTests()
     {
         var config = new MapperConfiguration(cfg =>
         {
-            cfg.AddProfile(new AjusteAlunoRotaMapper());
-            cfg.AddProfile(new AlunoMapper());
             cfg.AddProfile(new AssinaturaMapper());
-            cfg.AddProfile(new EnderecoMapper());
-            cfg.AddProfile(new MotoristaMapper());
             cfg.AddProfile(new PagamentoMapper());
             cfg.AddProfile(new PaginadoMapper());
             cfg.AddProfile(new PlanoMapper());
-            cfg.AddProfile(new RotaMapper());
-            cfg.AddProfile(new TokenMapper());
-            cfg.AddProfile(new UserMapper());
-            cfg.AddProfile(new VeiculoMapper());
         });
 
         _mapper = config.CreateMapper();
 
-        _asaasService = new AsaasService(_paymentRepository.Object, _assinaturaRepository.Object, _mapper, _logger.Object);
+        _asaasService = new AsaasService(_paymentRepository.Object, _assinaturaRepository.Object, _publisher.Object, _mapper, _logger.Object);
     }
 
     [Fact]

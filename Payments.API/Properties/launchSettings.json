@@ -14,7 +14,15 @@
       "launchBrowser": false,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+
+        "RABBITMQ_HOST": "localhost",
+        "RABBITMQ_VHOST": "/",
+        "RABBITMQ_PORT": "5672",
+        "RABBITMQ_USER": "guest",
+        "RABBITMQ_PASSWORD": "guest",
+        "RABBITMQ_USE_SSL": "false",
+        "RABBITMQ_APPLICATIONNAME": "MinhaAplicacao"
       },
       "sslPort": 44321
     },
@@ -25,7 +33,15 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:11000;https://localhost:11001",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+
+        "RABBITMQ_HOST": "localhost",
+        "RABBITMQ_VHOST": "/",
+        "RABBITMQ_PORT": "5672",
+        "RABBITMQ_USER": "admin",
+        "RABBITMQ_PASSWORD": "admin",
+        "RABBITMQ_USE_SSL": "false",
+        "RABBITMQ_APPLICATIONNAME": "Payments"
       },
       "sslPort": 44321
     }
