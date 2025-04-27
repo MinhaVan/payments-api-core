@@ -24,7 +24,7 @@ public class AsaasController : BaseController
         return Ok();
     }
 
-    [HttpPost("pagamento")]
+    [HttpPost("pagamento/processar")]
     [Subscriber("queue.asaas.pagamento.v1")]
     public async Task<IActionResult> ProcessarPagamentoAsaasAsync(PagamentoWebHookAsaasRequest payment)
     {

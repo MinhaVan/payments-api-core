@@ -46,7 +46,7 @@ public class PagamentoController : BaseController
         return Success(await _assinaturaService.ObterHistoricoAsync(alunoId));
     }
 
-    [HttpPut("atualizar-plano")]
+    [HttpPut("Plano")]
     public async Task<IActionResult> AtualizarFormaPagamento([FromBody] AtualizarFormaPagamento requisicao)
     {
         await _assinaturaService.AtualizarFormaPagamentoAsync(requisicao);
