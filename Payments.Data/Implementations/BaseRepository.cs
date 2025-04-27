@@ -48,30 +48,6 @@ public class BaseRepository<T> : IBaseRepository<T> where T : Entity
         return await query.AsSplitQuery().ToListAsync();
     }
 
-    public async Task<Paginado<T>> BuscarPaginadoAsync(int pagina, int tamanho, Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
-    {
-        IQueryable<T> query = _dbSet.Where(predicate);
-
-        var quantidade = await query.CountAsync();
-
-        // Aplica os includes se forem fornecidos
-        if (includes != null && includes.Length > 0)
-        {
-            foreach (var include in includes)
-            {
-                query = query.Include(include);
-            }
-        }
-
-        var data = await query
-            .AsSplitQuery()
-            .Skip((pagina - 1) * tamanho)
-            .Take(tamanho)
-            .ToListAsync();
-
-        var response = new Paginado<T>(pagina, tamanho, quantidade, data);
-        return response;
-    }
 
     public async Task<T> BuscarUmAsync(Expression<Func<T, bool>> predicate, params Expression<Func<T, object>>[] includes)
     {

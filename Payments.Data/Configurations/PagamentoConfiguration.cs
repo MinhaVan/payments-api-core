@@ -9,7 +9,7 @@ public class PagamentoConfiguration : IEntityTypeConfiguration<Pagamento>
     public void Configure(EntityTypeBuilder<Pagamento> modelBuilder)
     {
         modelBuilder.ConfigureBaseEntity();
-        modelBuilder.ToTable("pagamentos");
+        modelBuilder.ToTable("pagamento");
         modelBuilder.HasOne(x => x.Assinatura)
             .WithMany(y => y.Pagamentos)
             .HasForeignKey(x => x.AssinaturaId);

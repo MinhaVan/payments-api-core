@@ -21,7 +21,7 @@ public class AssinaturaService : IAssinaturaService
 {
     private readonly ILogger<AssinaturaService> _logger;
     private readonly IBaseRepository<Plano> _planoRepository;
-    private readonly IBaseRepository<Usuario> _usuarioRepository;
+    private readonly IAuthApi _authApi;
     private readonly IBaseRepository<Assinatura> _assinaturaRepository;
     private readonly IApiAsaas _apiAsaas;
     private readonly IUserContext _userContext;
@@ -32,7 +32,7 @@ public class AssinaturaService : IAssinaturaService
         ILogger<AssinaturaService> logger,
         IUserContext userContext,
         IBaseRepository<Assinatura> assinaturaRepository,
-        IBaseRepository<Usuario> usuarioRepository,
+        IAuthApi authApi,
         IBaseRepository<Plano> planoRepository,
         IApiAsaas apiAsaas)
     {
@@ -40,7 +40,7 @@ public class AssinaturaService : IAssinaturaService
         _mapper = mapper;
         _apiAsaas = apiAsaas;
         _logger = logger;
-        _usuarioRepository = usuarioRepository;
+        _authApi = authApi;
         _assinaturaRepository = assinaturaRepository;
         _planoRepository = planoRepository;
     }
@@ -97,9 +97,16 @@ public class AssinaturaService : IAssinaturaService
         var usuarioId = _userContext.UserId;
         var empresaId = _userContext.Empresa;
 
-        Assinatura assinatura = await _assinaturaRepository.BuscarUmAsync(
-            x => x.UsuarioId == usuarioId && x.Usuario.EmpresaId == empresaId && x.AlunoId == AlunoId && x.Status == StatusEntityEnum.Ativo,
-            x => x.Usuario, x => x.Usuario.Empresa, x => x.Pagamentos, x => x.Plano);
+        var usuarioResponse = await _authApi.ObterUsuarioAsync(usuarioId);
+        if (usuarioResponse == null || usuarioResponse.Data == null)
+        {
+            throw new BusinessRuleException(usuarioResponse.Mensagem);
+        }
+
+        var usuario = usuarioResponse.Data;
+        var assinatura = await _assinaturaRepository.BuscarUmAsync(
+            x => x.UsuarioId == usuarioId && usuario.EmpresaId == empresaId && x.AlunoId == AlunoId && x.Status == StatusEntityEnum.Ativo,
+            x => x.Pagamentos, x => x.Plano);
 
         var response = _mapper.Map<AssinaturaViewModel>(assinatura);
         return response;
@@ -184,15 +191,15 @@ public class AssinaturaService : IAssinaturaService
     }
 
     #region Private Methos
-    private async Task<Usuario> ValidarUsuarioAsync(int usuarioId)
+    private async Task<UsuarioViewModel> ValidarUsuarioAsync(int usuarioId)
     {
-        var usuario = await _usuarioRepository.BuscarUmAsync(x => x.Id == usuarioId);
-        if (usuario is null)
+        var usuario = await _authApi.ObterUsuarioAsync(usuarioId);
+        if (usuario is null || !usuario.Sucesso)
         {
-            _logger.LogError($"[{usuarioId}] Usuário não existe ou está inativo!");
+            _logger.LogError($"[{usuarioId}] Usuário não existe ou está inativo! - {usuario.Mensagem}");
             throw new ArgumentException("Usuário não existe ou está inativo!");
         }
-        return usuario;
+        return usuario.Data;
     }
 
     private async Task<Plano> ValidarPlanoAsync(int planoId, decimal valor)
@@ -212,7 +219,7 @@ public class AssinaturaService : IAssinaturaService
         return plano;
     }
 
-    private async Task<string> ObterOuCriarClienteAsync(Usuario usuario)
+    private async Task<string> ObterOuCriarClienteAsync(UsuarioViewModel usuario)
     {
         if (string.IsNullOrEmpty(usuario.ClientIdPaymentGateway))
         {
@@ -236,7 +243,8 @@ public class AssinaturaService : IAssinaturaService
             }
 
             usuario.ClientIdPaymentGateway = clienteResponse.Id;
-            await _usuarioRepository.AtualizarAsync(usuario);
+            var requestUsuarioAtualizar = _mapper.Map<UsuarioAtualizarViewModel>(usuario);
+            await _authApi.AtualizarAsync(requestUsuarioAtualizar);
         }
         return usuario.ClientIdPaymentGateway;
     }
@@ -318,10 +326,12 @@ public class AssinaturaService : IAssinaturaService
         return assinatura;
     }
 
-    private async Task AtualizarPlanoUsuarioAsync(Usuario usuario, int planoId)
+    private async Task AtualizarPlanoUsuarioAsync(UsuarioViewModel usuario, int planoId)
     {
-        usuario.PlanoId = planoId;
-        await _usuarioRepository.AtualizarAsync(usuario);
+        var requestUsuarioAtualizar = _mapper.Map<UsuarioAtualizarViewModel>(usuario);
+        requestUsuarioAtualizar.PlanoId = planoId;
+
+        await _authApi.AtualizarAsync(requestUsuarioAtualizar);
     }
     #endregion
 }

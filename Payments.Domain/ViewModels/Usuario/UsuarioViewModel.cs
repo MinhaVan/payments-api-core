@@ -7,6 +7,7 @@ namespace Payments.Domain.ViewModels;
 public class UsuarioViewModel
 {
     public int Id { get; set; }
+    public string ClientIdPaymentGateway { get; set; }
     public string CPF { get; set; }
     public string Contato { get; set; }
     public string Email { get; set; }

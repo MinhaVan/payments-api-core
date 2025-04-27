@@ -26,18 +26,9 @@ public static class RepositoryExtensions
 
         // Repositories
         services.AddScoped(typeof(IBaseRepository<>), typeof(BaseRepository<>));
-        services.AddScoped<IBaseRepository<Rota>, BaseRepository<Rota>>();
-        services.AddScoped<IBaseRepository<Endereco>, BaseRepository<Endereco>>();
-        services.AddScoped<IBaseRepository<RotaHistorico>, BaseRepository<RotaHistorico>>();
-        services.AddScoped<IRotaHistoricoRepository, RotaHistoricoRepository>();
         services.AddScoped<IBaseRepository<Pagamento>, BaseRepository<Pagamento>>();
-        services.AddScoped<IBaseRepository<Veiculo>, BaseRepository<Veiculo>>();
         services.AddScoped<IBaseRepository<Plano>, BaseRepository<Plano>>();
-        services.AddScoped<IUsuarioRepository, UsuarioRepository>();
         services.AddScoped<IBaseRepository<Assinatura>, BaseRepository<Assinatura>>();
-        services.AddScoped<IBaseRepository<UsuarioPermissao>, BaseRepository<UsuarioPermissao>>();
-        services.AddScoped<IBaseRepository<Permissao>, BaseRepository<Permissao>>();
-        services.AddScoped<IBaseRepository<Aluno>, BaseRepository<Aluno>>();
         services.AddScoped<IRedisRepository, RedisRepository>();
 
         services.AddQueue(secretManager);

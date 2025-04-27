@@ -20,6 +20,9 @@ public static class HttpExtensions
             client.DefaultRequestHeaders.Add("Accept", "application/json");
         });
 
+        services.AddRefitClient<IAuthApi>()
+            .ConfigureHttpClient(c => c.BaseAddress = new Uri(secretManager.URL.AuthAPI));
+
         Console.WriteLine("Configuração das APIs consumidas realizada com sucesso!");
 
         return services;

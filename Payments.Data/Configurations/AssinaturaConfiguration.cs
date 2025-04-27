@@ -9,10 +9,7 @@ public class AssinaturaConfiguration : IEntityTypeConfiguration<Assinatura>
     public void Configure(EntityTypeBuilder<Assinatura> modelBuilder)
     {
         modelBuilder.ConfigureBaseEntity();
-        modelBuilder.ToTable("assinaturas");
-        modelBuilder.HasOne(x => x.Usuario)
-            .WithMany(y => y.Assinaturas)
-            .HasForeignKey(x => x.UsuarioId);
+        modelBuilder.ToTable("assinatura");
 
         modelBuilder.HasOne(x => x.Plano)
             .WithMany(y => y.Assinaturas)

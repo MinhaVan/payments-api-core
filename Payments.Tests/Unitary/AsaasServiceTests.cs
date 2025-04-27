@@ -28,7 +28,6 @@ public class AsaasServiceTests
         {
             cfg.AddProfile(new AssinaturaMapper());
             cfg.AddProfile(new PagamentoMapper());
-            cfg.AddProfile(new PaginadoMapper());
             cfg.AddProfile(new PlanoMapper());
         });
 

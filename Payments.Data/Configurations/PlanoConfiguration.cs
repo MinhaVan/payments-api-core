@@ -10,11 +10,5 @@ public class PlanoConfiguration : IEntityTypeConfiguration<Plano>
     {
         modelBuilder.ConfigureBaseEntity();
         modelBuilder.ToTable("plano");
-        modelBuilder.HasMany(x => x.Usuarios)
-            .WithOne(y => y.Plano)
-            .HasForeignKey(x => x.PlanoId);
-        modelBuilder.HasOne(x => x.Empresa)
-            .WithMany(y => y.Planos)
-            .HasForeignKey(x => x.EmpresaId);
     }
 }

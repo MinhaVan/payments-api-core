@@ -23,7 +23,6 @@ public class Assinatura : Entity
     /// </summary>
     public string Imagem { get; set; }
     //
-    public Usuario Usuario { get; set; }
     public Plano Plano { get; set; }
     public virtual List<Pagamento> Pagamentos { get; set; }
 }

@@ -29,7 +29,6 @@ public class APIContext : DbContext
     {
         modelBuilder.ApplyConfiguration(new PlanoConfiguration());
         modelBuilder.ApplyConfiguration(new PagamentoConfiguration());
-        modelBuilder.ApplyConfiguration(new EmpresaConfiguration());
         modelBuilder.ApplyConfiguration(new AssinaturaConfiguration());
 
         base.OnModelCreating(modelBuilder);
@@ -52,21 +51,7 @@ public class APIContext : DbContext
         }
     }
 
-    public DbSet<AjusteAlunoRota> AjusteAlunoRotas { get; set; }
-    public DbSet<Usuario> Usuarios { get; set; }
-    public DbSet<Aluno> Alunos { get; set; }
-    public DbSet<Rota> Rotas { get; set; }
-    public DbSet<RotaHistorico> RotaHistoricos { get; set; }
-    public DbSet<LocalizacaoTrajeto> LocalizacaoTrajetos { get; set; }
-    public DbSet<Endereco> Enderecos { get; set; }
-    public DbSet<AlunoRota> AlunoRotas { get; set; }
     public DbSet<Plano> Planos { get; set; }
     public DbSet<Assinatura> Assinaturas { get; set; }
     public DbSet<Pagamento> Pagamentos { get; set; }
-    public DbSet<MotoristaRota> MotoristaRotas { get; set; }
-    public DbSet<Motorista> Motoristas { get; set; }
-    public DbSet<Permissao> Permissoes { get; set; }
-    public DbSet<UsuarioPermissao> UsuarioPermissoes { get; set; }
-    public DbSet<AlunoRotaHistorico> AlunoRotaHistoricos { get; set; }
-    public DbSet<OrdemTrajeto> OrdemTrajetos { get; set; }
 }

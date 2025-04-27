@@ -22,7 +22,7 @@ namespace Payments.Tests.Unitary
     public class AssinaturaServiceTests
     {
         private readonly Mock<IBaseRepository<Assinatura>> _assinaturaRepository = new();
-        private readonly Mock<IBaseRepository<Usuario>> _usuarioRepository = new();
+        private readonly Mock<IAuthApi> _usuarioRepository = new();
         private readonly Mock<IBaseRepository<Plano>> _planoRepository = new();
         private readonly Mock<IApiAsaas> _apiAsaas = new();
         private readonly Mock<IUserContext> _userContext = new();
