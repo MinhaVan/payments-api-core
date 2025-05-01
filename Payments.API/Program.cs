@@ -50,8 +50,18 @@ if (app.Environment.IsDevelopment())
 }
 
 // Configurações gerais
+#if !DEBUG
+app.UsePathBase("/payments");
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/payments/swagger/v1/swagger.json", "Payments.API v1");
+    c.RoutePrefix = "swagger";
+});
+#else
 app.UseSwagger();
 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Payments.API v1"));
+#endif
 
 app.UseResponseCompression();
 app.UseRouting();
