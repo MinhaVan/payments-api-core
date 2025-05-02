@@ -8,7 +8,7 @@ on:
 
 jobs:
   deploy-dev:
-    if: github.ref == 'refs/heads/develop'
+    if: github.ref == 'refs/heads/develop' || github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -31,43 +31,33 @@ jobs:
           key: ${{ secrets.VPS_DEV_SSH_KEY }}
           script: |
             set -e
-            echo "Acessando diretório de deploy DEV..."
             cd deploy/dev/
 
-            echo "Atualizando código da payments-api-core..."
             cd ./payments-api-core
             git fetch origin && git checkout develop && git pull
 
-            echo "Atualizando código da infra..."
             cd ../infra
             git fetch origin && git checkout develop && git pull
 
             cd ./APIs
-
-            echo "Parando container payments-api-dev (se existir)..."
             docker compose stop payments-api-dev || true
-
-            echo "Removendo container payments-api-dev (se existir)..."
             docker compose rm -f payments-api-dev || true
-
-            echo "Removendo imagem antiga payments-api-dev..."
             docker rmi apis-payments-api-dev:latest || true
 
-            echo "Buildando apenas payments-api-dev..."
-            docker compose build payments-api-dev
+            docker compose build
 
-            echo "Subindo apenas payments-api-dev..."
-            if docker compose up -d payments-api-dev; then
-              echo "Deploy DEV da payments-api-dev concluído com sucesso! Salvando imagem de backup..."
+            if docker compose up -d; then
+              echo "Deploy DEV com sucesso! Salvando imagem de backup..."
               docker tag apis-payments-api-dev:latest apis-payments-api-dev-backup:latest
             else
-              echo "Erro no deploy DEV. Iniciando rollback..."
-              docker compose stop payments-api-dev || true
+              echo "Erro no deploy DEV. Rollback iniciado..."
+              docker compose down || true
               docker pull apis-payments-api-dev-backup:latest
-              docker run -d --name payments-api-dev --network services-dev -p 19003:8080 apis-payments-api-dev-backup:latest
+              docker run -d --name apis-payments-api-dev:latest apis-payments-api-dev-backup:latest
               echo "Rollback DEV concluído."
               exit 1
             fi
+          debug: true
 
   deploy-prod:
     if: github.ref == 'refs/heads/main'
@@ -88,7 +78,7 @@ jobs:
         run: |
           dotnet test --no-build --verbosity normal
 
-      - name: SSH Deploy PROD 
+      - name: SSH Deploy PROD
         uses: appleboy/ssh-action@v0.1.10
         with:
           host: ${{ secrets.VPS_PROD_HOST }}
@@ -96,36 +86,29 @@ jobs:
           key: ${{ secrets.VPS_PROD_SSH_KEY }}
           script: |
             set -e
+            cd deploy/prod/
 
-            # Navega para o código da API e atualiza
-            cd deploy/prod/payments-api-core
+            cd ./payments-api-core
             git fetch origin && git checkout main && git pull
 
-            # Navega para o compose e atualiza infra
             cd ../infra
             git fetch origin && git checkout main && git pull
 
             cd ./APIs
-
-            echo "Parando e removendo container da payments-api..."
             docker compose stop payments-api || true
             docker compose rm -f payments-api || true
-
-            echo "Removendo imagem atual da payments-api..."
             docker rmi apis-payments-api:latest || true
 
-            echo "Buildando payments-api isoladamente..."
-            docker compose build payments-api
+            docker compose build
 
-            echo "Subindo payments-api isoladamente..."
-            if docker compose up -d payments-api; then
-              echo "Deploy da payments-api concluído com sucesso!"
+            if docker compose up -d; then
+              echo "Deploy PROD com sucesso! Salvando imagem de backup..."
               docker tag apis-payments-api:latest apis-payments-api-backup:latest
             else
-              echo "Erro no deploy da payments-api. Iniciando rollback..."
-              docker compose stop payments-api || true
+              echo "Erro no deploy PROD. Rollback iniciado..."
+              docker compose down || true
               docker pull apis-payments-api-backup:latest
-              docker run -d --name payments-api --network services-dev -p 9003:8080 apis-payments-api-backup:latest
-              echo "Rollback da payments-api concluído."
+              docker run -d --name apis-payments-api:latest apis-payments-api-backup:latest
+              echo "Rollback PROD concluído."
               exit 1
             fi
