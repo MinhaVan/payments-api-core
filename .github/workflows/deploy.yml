@@ -56,7 +56,7 @@ jobs:
               echo "Erro no deploy DEV. Rollback iniciado..."
               docker compose down || true
               docker tag apis-payments-api-dev-backup:latest apis-payments-api-dev:latest
-              docker run -d --name apis-payments-api-dev:latest apis-payments-api-dev-backup:latest
+              docker run -d --name payments-api-dev apis-payments-api-dev-backup:latest
               echo "Rollback DEV concluído."
               exit 1
             fi
@@ -115,7 +115,7 @@ jobs:
               echo "Erro no deploy PROD. Rollback iniciado..."
               docker compose down || true
               docker tag apis-payments-api-backup:latest apis-payments-api:latest
-              docker run -d --name apis-payments-api:latest apis-payments-api-backup:latest
+              docker run -d --name payments-api apis-payments-api-backup:latest
               echo "Rollback PROD concluído."
               exit 1
             fi
