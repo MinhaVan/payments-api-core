@@ -9,6 +9,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Prometheus;
 using Microsoft.Extensions.DependencyInjection;
+using Newtonsoft.Json;
+using Payments.Data.Context;
+using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 var environment = builder.Environment.EnvironmentName;
@@ -22,6 +25,7 @@ builder.Configuration
 
 // Adiciona as configurações do Secrets Manager
 var secretManager = builder.Services.AddSecretManager(builder.Configuration);
+Console.WriteLine($"Secret: '{JsonConvert.SerializeObject(secretManager)}'");
 
 // Configura os serviços
 builder.Services.AddCustomAuthentication(secretManager)
@@ -44,24 +48,29 @@ builder.Logging.ClearProviders().AddConsole().AddDebug();
 var app = builder.Build();
 
 // Configurações específicas para desenvolvimento
-if (app.Environment.IsDevelopment())
+if (environment == "local")
 {
     app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Payments.API v1"));
 }
-
-// Configurações gerais
-#if !DEBUG
-app.UsePathBase("/payments");
-app.UseSwagger();
-app.UseSwaggerUI(c =>
+else
 {
-    c.SwaggerEndpoint("/payments/swagger/v1/swagger.json", "Payments.API v1");
-    c.RoutePrefix = "swagger";
-});
-#else
-app.UseSwagger();
-app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Payments.API v1"));
-#endif
+    using (var scope = app.Services.CreateScope())
+    {
+        Console.WriteLine($"Rodando migrations '{environment}'");
+        var db = scope.ServiceProvider.GetRequiredService<APIContext>();
+        db.Database.Migrate();
+        Console.WriteLine($"Migrations '{environment}' executadas com sucesso");
+    }
+
+    app.UseSwagger();
+    app.UseSwaggerUI(c =>
+    {
+        c.SwaggerEndpoint("/swagger/v1/swagger.json", "Payments.API v1");
+        c.RoutePrefix = "swagger";
+    });
+}
 
 app.UseResponseCompression();
 app.UseRouting();
