@@ -36,11 +36,11 @@ public static class ServiceExtensions
             options.Configuration.ChannelPrefix = "rotaHub"; // Nome opcional
         });
 
-        services.AddSingleton<IConnectionMultiplexer>(sp =>
-        {
-            var configuration = secretManager.ConnectionStrings.RedisConnection;
-            return ConnectionMultiplexer.Connect(configuration);
-        });
+        // services.AddSingleton<IConnectionMultiplexer>(sp =>
+        // {
+        //     var configuration = secretManager.ConnectionStrings.RedisConnection;
+        //     return ConnectionMultiplexer.Connect(configuration);
+        // });
 
         Console.WriteLine("Configuração do Redis realizada com sucesso!");
 

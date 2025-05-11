@@ -39,8 +39,8 @@ builder.Services.AddCustomAuthentication(secretManager)
                 .AddCustomRepository(secretManager)
                 .AddCustomMapper()
                 .AddControllersWithFilters()
-                .AddCustomHttp(secretManager)
-                .AddRabbitMq().WithEnviroments(builder.Configuration).WithScope().AddSubscribers(typeof(Program).Assembly);
+                .AddCustomHttp(secretManager);
+// .AddRabbitMq().WithEnviroments(builder.Configuration).WithScope().AddSubscribers(typeof(Program).Assembly);
 
 // Configura o logger
 builder.Logging.ClearProviders().AddConsole().AddDebug();

@@ -26,7 +26,7 @@ public class AsaasController : BaseController
     }
 
     [HttpPost("pagamento/processar")]
-    [Subscriber("queue.asaas.pagamento.v1")]
+    // [Subscriber("queue.asaas.pagamento.v1")]
     public async Task<IActionResult> ProcessarPagamentoAsaasAsync(PagamentoWebHookAsaasRequest payment, CancellationToken cancellationToken)
     {
         var response = await _asaasService.PagamentoHookAsync(payment);

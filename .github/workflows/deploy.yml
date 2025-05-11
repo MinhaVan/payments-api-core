@@ -60,17 +60,5 @@ jobs:
             docker rmi apis-payments-api-dev:latest || true
 
             docker compose build payments-api-dev
-
-            if docker compose up -d payments-api-dev; then
-              echo "Deploy DEV com sucesso! Salvando imagem de backup..."
-              docker tag apis-payments-api-dev:latest apis-payments-api-dev-backup:latest
-            else
-              echo "Erro no deploy DEV. Rollback iniciado..."
-              docker compose stop payments-api-dev || true
-              docker compose rm -f payments-api-dev || true
-              docker tag apis-payments-api-dev-backup:latest apis-payments-api-dev:latest
-              docker run -d --name payments-api-dev apis-payments-api-dev:latest
-              echo "Rollback DEV concluído."
-              exit 1
-            fi
+            docker compose up -d payments-api-dev
           debug: true

@@ -16,26 +16,26 @@ public class RabbitMqRepository : IRabbitMqRepository
 
     public Task PublishAsync<T>(string queue, T data)
     {
-        using var connection = _factory.CreateConnection();
-        using var channel = connection.CreateModel();
+        // using var connection = _factory.CreateConnection();
+        // using var channel = connection.CreateModel();
 
-        channel.QueueDeclare(
-            queue: queue,
-            durable: true,
-            exclusive: false,
-            autoDelete: false,
-            arguments: null
-        );
+        // channel.QueueDeclare(
+        //     queue: queue,
+        //     durable: true,
+        //     exclusive: false,
+        //     autoDelete: false,
+        //     arguments: null
+        // );
 
-        var message = System.Text.Json.JsonSerializer.Serialize(data);
-        var body = Encoding.UTF8.GetBytes(message);
+        // var message = System.Text.Json.JsonSerializer.Serialize(data);
+        // var body = Encoding.UTF8.GetBytes(message);
 
-        channel.BasicPublish(
-            exchange: "",
-            routingKey: queue,
-            basicProperties: null,
-            body: body
-        );
+        // channel.BasicPublish(
+        //     exchange: "",
+        //     routingKey: queue,
+        //     basicProperties: null,
+        //     body: body
+        // );
 
         return Task.CompletedTask;
     }

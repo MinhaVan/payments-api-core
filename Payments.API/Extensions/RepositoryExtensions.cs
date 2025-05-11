@@ -42,15 +42,15 @@ public static class RepositoryExtensions
     {
         var connection = secretManager.ConnectionStrings.RabbitConnection.Split(':');
 
-        services.AddSingleton(sp =>
-            new ConnectionFactory
-            {
-                HostName = connection.ElementAt(0), //"localhost",
-                Port = int.Parse(connection.ElementAt(1)), // 5672,
-                UserName = connection.ElementAt(2), // admin
-                Password = connection.ElementAt(3) // admin
-            }
-        );
+        // services.AddSingleton(sp =>
+        //     new ConnectionFactory
+        //     {
+        //         HostName = connection.ElementAt(0), //"localhost",
+        //         Port = int.Parse(connection.ElementAt(1)), // 5672,
+        //         UserName = connection.ElementAt(2), // admin
+        //         Password = connection.ElementAt(3) // admin
+        //     }
+        // );
 
         services.AddScoped<IRabbitMqRepository, RabbitMqRepository>();
 

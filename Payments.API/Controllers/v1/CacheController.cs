@@ -11,20 +11,20 @@ namespace Payments.API.Controllers.v1;
 [Authorize("Bearer")]
 public class CacheController : BaseController
 {
-    private readonly IRedisRepository _redisRepository;
+    // private readonly IRedisRepository _redisRepository;
 
-    public CacheController(IRedisRepository redisRepository)
-    {
-        _redisRepository = redisRepository;
-    }
+    // public CacheController(IRedisRepository redisRepository)
+    // {
+    //     _redisRepository = redisRepository;
+    // }
 
-    [HttpDelete("{key}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
-    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public async Task<IActionResult> Delete([FromRoute] string key)
-    {
-        await _redisRepository.RemoveAsync(key);
-        return Ok();
-    }
+    // [HttpDelete("{key}")]
+    // [ProducesResponseType(StatusCodes.Status200OK)]
+    // [ProducesResponseType(StatusCodes.Status404NotFound)]
+    // [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+    // public async Task<IActionResult> Delete([FromRoute] string key)
+    // {
+    //     await _redisRepository.RemoveAsync(key);
+    //     return Ok();
+    // }
 }
