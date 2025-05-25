@@ -1,7 +1,6 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Payments.API.Filters;
 using Payments.Domain.ApiModel;
 using Payments.Domain.Interfaces.Services;
 
