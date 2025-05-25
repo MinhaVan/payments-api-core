@@ -19,16 +19,16 @@ public class AsaasService : IAsaasService
     private readonly IMapper _mapper;
     private readonly IBaseRepository<Assinatura> _assinaturaRepository;
     private readonly IBaseRepository<Pagamento> _paymentRepository;
-    private readonly IPublisher<PagamentoWebHookAsaasRequest> _publisher;
+    // private readonly IPublisher<PagamentoWebHookAsaasRequest> _publisher;
     private readonly ILogger _logger;
     public AsaasService(
         IBaseRepository<Pagamento> paymentRepository,
         IBaseRepository<Assinatura> assinaturaRepository,
-        IPublisher<PagamentoWebHookAsaasRequest> publisher,
+        // IPublisher<PagamentoWebHookAsaasRequest> publisher,
         IMapper mapper,
         ILogger<AsaasService> logger)
     {
-        _publisher = publisher;
+        // _publisher = publisher;
         _assinaturaRepository = assinaturaRepository;
         _paymentRepository = paymentRepository;
         _mapper = mapper;
@@ -37,7 +37,8 @@ public class AsaasService : IAsaasService
 
     public async Task PublicarNaFilaAsync(PagamentoWebHookAsaasRequest payment)
     {
-        await _publisher.Publish(payment, CancellationToken.None, "queue.asaas.pagamento.v1");
+        await PagamentoHookAsync(payment);
+        // await _publisher.Publish(payment, CancellationToken.None, "queue.asaas.pagamento.v1");
     }
 
     public async Task<bool> PagamentoHookAsync(PagamentoWebHookAsaasRequest payment)
