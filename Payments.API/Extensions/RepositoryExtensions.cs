@@ -4,7 +4,6 @@ using Payments.Data.APIs;
 using Payments.Data.Implementations;
 using Payments.Data.Repositories;
 using Payments.Domain.Interfaces.APIs;
-using Payments.Domain.Interfaces.Repositories;
 using Payments.Domain.Interfaces.Repository;
 using Payments.Domain.Models;
 using Payments.Application.Configuration;
@@ -29,7 +28,6 @@ public static class RepositoryExtensions
         services.AddScoped<IBaseRepository<Pagamento>, BaseRepository<Pagamento>>();
         services.AddScoped<IBaseRepository<Plano>, BaseRepository<Plano>>();
         services.AddScoped<IBaseRepository<Assinatura>, BaseRepository<Assinatura>>();
-        services.AddScoped<IRedisRepository, RedisRepository>();
 
         services.AddQueue(secretManager);
 
@@ -51,8 +49,6 @@ public static class RepositoryExtensions
         //         Password = connection.ElementAt(3) // admin
         //     }
         // );
-
-        services.AddScoped<IRabbitMqRepository, RabbitMqRepository>();
 
         return services;
     }
