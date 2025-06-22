@@ -11,8 +11,14 @@ public class SecretManager
     public TokenConfigurations TokenConfigurations { get; set; }
     public Google Google { get; set; }
     public URL URL { get; set; }
+    public Asaas Asaas { get; set; }
     public string AllowedHosts { get; set; }
 
+}
+
+public class Asaas
+{
+    public string TokenWebHookAsaas { get; set; }
 }
 
 public class IpRateLimiting
