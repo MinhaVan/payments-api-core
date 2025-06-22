@@ -6,7 +6,7 @@ EXPOSE 443
 
 # Etapa para build
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
-ARG BUILD_CONFIGURATION=Release
+ARG BUILD_CONFIGURATION=Development
 WORKDIR /src
 
 COPY ["Payments.sln", "."]
@@ -26,7 +26,7 @@ RUN dotnet build -c $BUILD_CONFIGURATION -o /app/build
 
 # Etapa para publish
 FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
+ARG BUILD_CONFIGURATION=Development
 RUN dotnet publish -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
 # Etapa final para execução
